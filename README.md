@@ -9,7 +9,7 @@ AirBNC is a ...
 Initialise NPM
     npm init -y
 
-Install NPM dependencies (Jest, node-postgres)
+Install NPM dependencies (dotenv, jest, pg, pg-format)
     npm i
 
 !!WARNING!! The next script includes a command to drop any existing database called "airbnc_test"
@@ -17,3 +17,4 @@ Install NPM dependencies (Jest, node-postgres)
 Create Database
     psql -f ./db/setup-db.sql
 
+## USAGE

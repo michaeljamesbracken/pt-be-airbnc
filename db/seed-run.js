@@ -1,5 +1,6 @@
 const seed = require("./seed.js");
+const db = require("./connection")
 
-seed();
-
-console.log("Hello!")
+seed().then(() => {
+    db.end
+});
