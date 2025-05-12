@@ -19,7 +19,7 @@ async function seed (){
     const propertyTypesSeedData = formatPropertyTypesData(propertyTypesData);
     const usersSeedData = formatUsersData(usersData);
     const propertiesSeedData = formatPropertiesData(propertiesData, usersData);
-
+    const reviewsSeedData = formatReviewsData(reviewsData, propertiesData, usersData);
     // DROP TABLES
 
     await db.query(
@@ -79,6 +79,10 @@ async function seed (){
 
     await db.query(
         format(`INSERT INTO properties(host_id, name, location, property_type, price_per_night, description) VALUES %L`, propertiesSeedData)
+    )
+
+    await db.query(
+        format(`INSERT INTO reviews(property_id, guest_id, rating, comment) VALUES %L`, reviewsSeedData)
     )
 
 }

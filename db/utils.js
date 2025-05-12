@@ -21,8 +21,28 @@ function formatPropertyTypesData(propertyTypes){
     return propertyTypes.map(({property_type, description}) => [property_type, description])
 }
 
-function formatReviewsData(reviews){
-
+function formatReviewsData(reviews, properties, users){
+    return reviews.map((review) => {
+        users.forEach((user) => {
+            
+            const userName = user.first_name + " " + user.surname
+            if (review.guest_name === userName){
+                review.guest_id = users.indexOf(user) + 1
+                delete review.guest_name
+            }
+        })
+        properties.forEach((property) => {
+            if (review.property_name === property.name){
+                review.property_id = properties.indexOf(property) + 1
+                delete review.property_name
+            }
+        })
+        
+        return [review.property_id,
+            review.guest_id,
+            review.rating,
+            review.comment]
+    })
 }
 
 function formatUsersData(users){
