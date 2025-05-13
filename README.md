@@ -17,4 +17,7 @@ Install NPM dependencies (dotenv, jest, pg, pg-format)
 Create Database
     psql -f ./db/setup-db.sql
 
+Run Seed script
+    npm run seed
+
 ## USAGE
