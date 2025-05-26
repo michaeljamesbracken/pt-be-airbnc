@@ -1,23 +1,53 @@
-Last Update: 10 May 2025
+Last Update: 26 May 2025
+
 
 # AirBNC
 
+
 AirBNC is a ...
+
 
 ## SETUP
 
-Initialise NPM
-    npm init -y
 
-Install NPM dependencies (dotenv, jest, pg, pg-format)
-    npm i
+1. Install NPM dependencies 
 
-!!WARNING!! The next script includes a command to drop any existing database called "airbnc_test"
+        npm i
 
-Create Database
-    psql -f ./db/setup-db.sql
+    Dependencies used:
 
-Run Seed script
-    npm run seed
+    - **dotenv** - 
+    - **express** - 
+    - **pg** - 
+    - **pg-format** - 
+
+    Dev Dependencies used:
+
+    - **jest** - 
+    - **nodemon** - 
+    - **supertest** - 
+
+2. Setup Database
+
+    **!!WARNING!!** This next script includes a command to drop any existing database called "airbnc_test"
+
+        npm run setup-db
+
+
+3. Create `.env`  file at the root level with the following content:
+
+        PGDATABASE=airbnc_test
+
+
+4. Run Seed script
+
+        npm run seed
+
+    Tables seeded:
+    - Table 1
+    - Table 2
+    - Table 3
+    - Table 4
+
 
 ## USAGE

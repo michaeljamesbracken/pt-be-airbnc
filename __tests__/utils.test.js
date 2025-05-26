@@ -1,26 +1,26 @@
 const {formatPropertiesData,
     formatPropertyTypesData,
     formatReviewsData,
-    formatUsersData} = require("../db/utils.js") 
+    formatUsersData} = require("../db/utils.js");
 
 describe("Utility Functions Testing", () => {
     describe("formatPropertyTypesData() testing", () => {
         test("Returns an array when passed an Array of Object(s)", () => {
             const arrOfObj = [{}]
             expect(Array.isArray(formatPropertyTypesData(arrOfObj))).toBe(true)
-        })
+        });
         test("Returns a nested array when passed an Array of Object(s)", () => {
             const arrOfObj = [{}]
             expect(Array.isArray(formatPropertyTypesData(arrOfObj)[0])).toBe(true)
-        })
+        });
         test("Returns the value of property_type as the first value in the inner array", () => {
             const propertyTypesTestData = [{property_type: "house"}]
             expect(formatPropertyTypesData(propertyTypesTestData)[0][0]).toBe("house")
-        })
+        });
         test("Returns the value of description as the second value in the inner array", () => {
             const propertyTypesTestData = [{description: "it's a house"}]
             expect(formatPropertyTypesData(propertyTypesTestData)[0][1]).toBe("it's a house")
-        })
+        });
         test("Returns all of the values as the inner array", () => {
             const propertyTypesTestData = [
                 {property_type: "house", description: "it's a house"}]
@@ -28,7 +28,7 @@ describe("Utility Functions Testing", () => {
                 ["house", "it's a house"]]
             
             expect(formatPropertyTypesData(propertyTypesTestData)).toEqual(expectedOutput)
-        })
+        });
         test("Returns multiple arrays when passed multiple objects", () => {
             const propertyTypesTestData = [
                 {property_type: "house", description: "it's a house"}, 
@@ -40,45 +40,45 @@ describe("Utility Functions Testing", () => {
                 ["bungalow", "it's a short house"]]
             
             expect(formatPropertyTypesData(propertyTypesTestData)).toEqual(expectedOutput)
-        })
-    })
+        });
+    });
     describe("formatUsersData() testing", () => {
         test("Returns an array when passed an Array of Object(s)", () => {
             const arrOfObj = [{}]
             expect(Array.isArray(formatUsersData(arrOfObj))).toBe(true)
-        })
+        });
         test("Returns a nested array when passed an Array of Object(s)", () => {
             const arrOfObj = [{}]
             expect(Array.isArray(formatUsersData(arrOfObj)[0])).toBe(true)
-        })
+        });
         test("Returns the value of first_name as the first value in the inner array", () => {
             const usersTestData = [{first_name: "Michael"}]
             expect(formatUsersData(usersTestData)[0][0]).toBe("Michael")
-        })
+        });
         test("Returns the value of surname as the second value in the inner array", () => {
             const usersTestData = [{surname: "Bracken"}]
             expect(formatUsersData(usersTestData)[0][1]).toBe("Bracken")
-        })
+        });
         test("Returns the value of email as the third value in the inner array", () => {
             const usersTestData = [{email: "michael@email.com"}]
             expect(formatUsersData(usersTestData)[0][2]).toBe("michael@email.com")
-        })
+        });
         test("Returns the value of phone_number as the fourth value in the inner array", () => {
             const usersTestData = [{phone_number: "+44 7000 111111"}]
             expect(formatUsersData(usersTestData)[0][3]).toBe("+44 7000 111111")
-        })
+        });
         test("Returns the value of role as TRUE in the fifth value in the inner array if the passed value of role is 'host'", () => {
             const usersTestData = [{role: "host"}]
             expect(formatUsersData(usersTestData)[0][4]).toBe("true")
-        })
+        });
         test("Returns the value of role as FALSE in the fifth value in the inner array, if the passed value of role is not 'host'", () => {
             const usersTestData = [{role: "guest"}]
             expect(formatUsersData(usersTestData)[0][4]).toBe("false")
-        })
+        });
         test("Returns the value of avatar as the sixth value in the inner array", () => {
             const usersTestData = [{avatar: "avatar.com/michael"}]
             expect(formatUsersData(usersTestData)[0][5]).toBe("avatar.com/michael")
-        })
+        });
         test("Returns all of the values as part of the inner array", () => {
             const usersTestData = [
                 {first_name: "Michael", surname: "Bracken",
@@ -91,7 +91,7 @@ describe("Utility Functions Testing", () => {
                 "true", "avatar.com/michael"]]
                 
             expect(formatUsersData(usersTestData)).toEqual(expectedOutput)
-        })
+        });
         test("Returns multiple arrays when passed multiple objects", () => {
             const usersTestData = [
                 {first_name: "Michael", surname: "Bracken",
@@ -111,18 +111,18 @@ describe("Utility Functions Testing", () => {
                 
 
             expect(formatUsersData(usersTestData)).toEqual(expectedOutput)
-        })
-    })
+        });
+    });
     describe("formatPropertiesData() testing", () => {
 
         test("Returns an array when passed arguements", () => {
             const arrOfObj = [{}]
             expect(Array.isArray(formatPropertiesData(arrOfObj, arrOfObj))).toBe(true)
-        })
+        });
         test("Returns a nested array when passed arguements", () => {
             const arrOfObj = [{}]
             expect(Array.isArray(formatPropertiesData(arrOfObj, arrOfObj)[0])).toBe(true)
-        })
+        });
 
         const testPropertyData = [{"name": "Modern Apartment in City Center",
             "property_type": "Apartment",
@@ -148,22 +148,22 @@ describe("Utility Functions Testing", () => {
 
         test("Returns the user_id of the host_name as the first value of the inner array", () => {
             expect(formatPropertiesData(testPropertyData, testUsersData)[0][0]).toBe(2)
-        })
+        });
         test("Returns name as the second value of the inner array", () => {
             expect(formatPropertiesData(testPropertyData, testUsersData)[0][1]).toBe("Modern Apartment in City Center")
-        })
+        });
         test("Returns location as the third value of the inner array", () => {
             expect(formatPropertiesData(testPropertyData, testUsersData)[0][2]).toBe("London, UK")
-        })
+        });
         test("Returns property_type as the fourth value of the inner array", () => {
             expect(formatPropertiesData(testPropertyData, testUsersData)[0][3]).toBe("Apartment")
-        })
+        });
         test("Returns price_per_night as the fifth value of the inner array", () => {
             expect(formatPropertiesData(testPropertyData, testUsersData)[0][4]).toBe(120.0)
-        })
+        });
         test("Returns description as the sixth value of the inner array", () => {
             expect(formatPropertiesData(testPropertyData, testUsersData)[0][5]).toBe("Description of Modern Apartment in City Center.")
-        })
+        });
         test("Returns all of the values as the inner array", () => {
             const expectedOutput = [[
                 2,
@@ -174,7 +174,7 @@ describe("Utility Functions Testing", () => {
                 "Description of Modern Apartment in City Center."]]
             
                 expect(formatPropertiesData(testPropertyData, testUsersData)).toEqual(expectedOutput)
-        })
+        });
         test("Returns multiple arrays when passed multiple objects", () => {
             const testPropertyData = [{"name": "Modern Apartment in City Center",
                 "property_type": "Apartment",
@@ -205,8 +205,8 @@ describe("Utility Functions Testing", () => {
                 150.0,
                 "Description of Cosy Family House."
                 ]]
-        })
-    })
+        });
+    });
     describe("formatReviewsData() testing", () => {
         const testReviewsData = [{
             "guest_name": "Alice Johnson",
@@ -283,23 +283,23 @@ describe("Utility Functions Testing", () => {
         test("Returns an array when passed arguements", () => {
             const arrOfObj = [{}]
             expect(Array.isArray(formatReviewsData(arrOfObj, arrOfObj, arrOfObj))).toBe(true)
-        })
+        });
         test("Returns a nested array when passed arguements", () => {
             const arrOfObj = [{}]
             expect(Array.isArray(formatReviewsData(arrOfObj, arrOfObj, arrOfObj)[0])).toBe(true)
-        })
+        });
         test("Returns the property_id as the first value of the inner array", () => {
             expect(formatReviewsData(testReviewsData, testPropertiesData, testUsersData)[0][0]).toBe(3)
-        })
+        });
         test("Returns the guest_id as the second value of the inner array", () => {
             expect(formatReviewsData(testReviewsData, testPropertiesData, testUsersData)[0][1]).toBe(1)
-        })
+        });
         test("Returns the rating as the third value of the inner array", () => {
             expect(formatReviewsData(testReviewsData, testPropertiesData, testUsersData)[0][2]).toBe(4)
-        })
+        });
         test("Returns the comment as the fourth value of the inner array", () => {
             expect(formatReviewsData(testReviewsData, testPropertiesData, testUsersData)[0][3]).toBe("Comment about Chic Studio Near the Beach: Great location and cosy space, perfect for a beach getaway.")
-        })
+        });
         test("Returns all of the values as one inner array", () => {
             const expectedOutput = [3,
                 1,
@@ -307,7 +307,7 @@ describe("Utility Functions Testing", () => {
                 "Comment about Chic Studio Near the Beach: Great location and cosy space, perfect for a beach getaway."
             ]
             expect(formatReviewsData(testReviewsData, testPropertiesData, testUsersData)[0]).toEqual(expectedOutput)
-        })
+        });
         test("Returns multiple arrays", () => {
             const expectedOutput = [[
                 3,
@@ -328,6 +328,6 @@ describe("Utility Functions Testing", () => {
                 "Comment about Luxury Penthouse with View: Incredible property! The view from the penthouse is stunning."
             ]]
             expect(formatReviewsData(testReviewsData, testPropertiesData, testUsersData)).toEqual(expectedOutput)
-        })
-    })
-})
+        });
+    });
+});

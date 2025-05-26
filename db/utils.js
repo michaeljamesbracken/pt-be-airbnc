@@ -1,64 +1,46 @@
-function formatPropertiesData(properties, users){
-    return properties.map((property) => { 
-        users.forEach((user) => {
-            const userName = user.first_name + " " + user.surname
-            if (property.host_name === userName){
-                property.host_id = users.indexOf(user) + 1
-                delete property.host_name
-            }
-        })
-        return [property.host_id,
-            property.name,
-            property.location,
-            property.property_type,
-            property.price_per_night,
-            property.description
-        ]
-    })
-}
+exports.createRef = (arr, prop1, prop2) => {
+    const obj = {};
+    arr.forEach((element) => {
+        obj[element[prop1]] = element[prop2]
+    });
+    return obj;
+};
 
-function formatPropertyTypesData(propertyTypes){
+exports.createUsersRef = (users, first_name, surname, user_id) => {
+    const obj = {};
+    users.forEach((user) => {
+        const userName = user[first_name] + " " + user[surname]
+        obj[userName] = user[user_id];
+    });
+    return obj;
+};
+
+exports.formatDataWithRef = (data, refObj, keyToRemove, keyToAdd) => {
+    return data.map(({ [keyToRemove]: removedKey, ...row }) => {
+        return { ...row, [keyToAdd]: refObj[removedKey] };
+    });
+};
+
+
+exports.formatPropertyTypesData = (propertyTypes) => {
     return propertyTypes.map(({property_type, description}) => [property_type, description])
-}
+};
 
-function formatReviewsData(reviews, properties, users){
-    return reviews.map((review) => {
-        users.forEach((user) => {
-            
-            const userName = user.first_name + " " + user.surname
-            if (review.guest_name === userName){
-                review.guest_id = users.indexOf(user) + 1
-                delete review.guest_name
-            }
-        })
-        properties.forEach((property) => {
-            if (review.property_name === property.name){
-                review.property_id = properties.indexOf(property) + 1
-                delete review.property_name
-            }
-        })
-        
-        return [review.property_id,
-            review.guest_id,
-            review.rating,
-            review.comment]
-    })
-}
-
-function formatUsersData(users){
+exports.formatUsersData = (users) => {
     return users.map(({first_name, surname, email, phone_number, role, avatar}) => {
-        if(role === "host"){
-            role = "true"
-        } else {
-            role = "false"
-        }
+        role === "host" ? role = "true" :role = "false"
         return [first_name, surname, email, phone_number, role, avatar]
     })
-}
+};
+
+exports.formatPropertiesData = (properties) => {
+    return properties.map(({host_id, name, location, property_type, price_per_night, description}) => 
+        [host_id, name, location, property_type, price_per_night, description])
+};
 
 
-module.exports = {formatPropertiesData,
-    formatPropertyTypesData,
-    formatReviewsData,
-    formatUsersData
-}
+exports.formatReviewsData = (reviews) => {
+    return reviews.map(({property_id, guest_id, rating, comment}) => 
+    [property_id, guest_id, rating, comment]);
+};
+
