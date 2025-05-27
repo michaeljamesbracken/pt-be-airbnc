@@ -6,11 +6,11 @@ exports.createRef = (arr, prop1, prop2) => {
     return obj;
 };
 
-exports.createUsersRef = (users, first_name, surname, user_id) => {
+exports.createUsersRef = (users) => {
     const obj = {};
     users.forEach((user) => {
-        const userName = user[first_name] + " " + user[surname]
-        obj[userName] = user[user_id];
+        const userName = user.first_name + " " + user.surname
+        obj[userName] = user.user_id;
     });
     return obj;
 };
@@ -20,7 +20,6 @@ exports.formatDataWithRef = (data, refObj, keyToRemove, keyToAdd) => {
         return { ...row, [keyToAdd]: refObj[removedKey] };
     });
 };
-
 
 exports.formatPropertyTypesData = (propertyTypes) => {
     return propertyTypes.map(({property_type, description}) => [property_type, description])
@@ -38,9 +37,13 @@ exports.formatPropertiesData = (properties) => {
         [host_id, name, location, property_type, price_per_night, description])
 };
 
-
 exports.formatReviewsData = (reviews) => {
     return reviews.map(({property_id, guest_id, rating, comment}) => 
     [property_id, guest_id, rating, comment]);
+};
+
+exports.formatFavouritesData = (favourites) => {
+    return favourites.map(({guest_id, property_id}) => 
+    [guest_id, property_id]);
 };
 

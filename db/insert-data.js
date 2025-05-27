@@ -1,7 +1,6 @@
 const db = require("./connection");
 const format = require("pg-format");
 
-
 exports.insertPropertyTypes = (propertyTypes) => {
     return db.query(format(`INSERT INTO property_type(property_type, description) VALUES %L`, propertyTypes));
 };
@@ -16,4 +15,8 @@ exports.insertProperties = (properties) => {
 
 exports.insertReviews = (reviews) => {
     return db.query(format(`INSERT INTO reviews(property_id, guest_id, rating, comment) VALUES %L`, reviews));
+};
+
+exports.insertFavourites = (favourites) => {
+    return db.query(format(`INSERT INTO favourites(guest_id, property_id) VALUES %L`, favourites));
 };

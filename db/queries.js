@@ -1,5 +1,5 @@
 
-exports.dropTables = `DROP TABLE IF EXISTS reviews, properties, users, property_type;`;
+exports.dropTables = `DROP TABLE IF EXISTS favourites, reviews, properties, users, property_type;`;
 
 exports.createPropertyType = `CREATE TABLE property_type(
         property_type VARCHAR NOT NULL PRIMARY KEY,
@@ -32,4 +32,8 @@ exports.createReviews = `CREATE TABLE reviews(
         comment TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);`;
 
+exports.createFavourites = `CREATE TABLE favourites(
+        favourite_id SERIAL PRIMARY KEY,
+        guest_id INTEGER NOT NULL REFERENCES users(user_id),
+        property_id INTEGER NOT NULL REFERENCES properties(property_id));`;
 

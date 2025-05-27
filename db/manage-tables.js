@@ -4,7 +4,8 @@ const {dropTables,
     createPropertyType,
     createUsers,
     createProperties,
-    createReviews} = require("./queries.js");
+    createReviews,
+    createFavourites} = require("./queries.js");
 
 exports.manageTables = async () => {
 
@@ -17,5 +18,7 @@ exports.manageTables = async () => {
     await db.query(createProperties);
 
     await db.query(createReviews);
+
+    await db.query(createFavourites);
 
 }

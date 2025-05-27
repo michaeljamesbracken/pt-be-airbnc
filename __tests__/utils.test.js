@@ -1,10 +1,85 @@
-const {formatPropertiesData,
+const {
+    createRef,
+    createUsersRef,
+    formatDataWithRef,
+    formatPropertiesData,
     formatPropertyTypesData,
     formatReviewsData,
-    formatUsersData} = require("../db/utils.js");
+    formatUsersData,
+    formatFavouritesData
+} = require("../db/utils.js");
 
-describe("Utility Functions Testing", () => {
-    describe("formatPropertyTypesData() testing", () => {
+describe("Utility Function Testing", () => {
+    describe("createRef() Testing", () => {
+        test("Returns an object when passed an array", () => {
+            expect(typeof createRef([])).toBe("object");
+        });
+        test("Returns the values from prop1 as keys in the new object. (Note: Keys will be strings)", () => {
+            expect(Object.keys(createRef([{a: 1, b: 2}, {a: 3, b: 4}], "a", "b"))).toEqual(["1", "3"]);
+        });
+        test("Returns the values from prop2 as values in the new object. (Note: Values do not have to be string)", () => {
+            expect(Object.values(createRef([{a: 1, b: 2}, {a: 3, b: 4}], "a", "b"))).toEqual([2, 4]);
+        });
+        test("Returns the values from prop1 and prop2 as key-value pairs", () => {
+            const testData = [
+                {number: 1, name: "alpha"},
+                {number: 2, name: "bravo"},
+                {number: 3, name: "charlie"}
+            ];
+            const expectedOutput = {1: "alpha", 2: "bravo", 3: "charlie"};
+            expect(createRef(testData, "number", "name")).toEqual(expectedOutput);
+        })
+    });
+    describe("createUsersRef() Testing", () => {
+        test("Returns an object when passed an array", () => {
+            expect(typeof createUsersRef([])).toBe("object");
+        });
+        test("Returns the concatenated first_name and surname as a key of the new object", () => {
+            expect(Object.keys(createUsersRef([{user_id: "101", first_name:"Michael", surname:"Bracken"}]))).toEqual(["Michael Bracken"]);
+        });
+        test("Returns the user_id as a value of the new object", () => {
+            expect(Object.values(createUsersRef([{user_id: "101", first_name:"Michael", surname:"Bracken"}]))).toEqual(["101"]);
+        });
+        test("Returns the concatenated name and user_id as key-value pairs", () => {
+            const testData = [
+                {user_id: "101", first_name:"Michael", surname:"Bracken"},
+                {user_id: "007", first_name:"James", surname:"Bond"}
+            ];
+
+            const expectedOutput = {"Michael Bracken": "101", "James Bond": "007"};
+
+            expect(createUsersRef(testData)).toEqual(expectedOutput);
+        });
+    });
+    describe("formatDataWithRef() Testing", () => {
+
+        const testData = [
+            {name: "Alex", age: 11},
+            {name: "Barry", age: 22},
+            {name: "Chris", age: 33}
+        ];
+
+        const testRef = {
+            "Alex": "001",
+            "Barry": "002",
+            "Chris": "003"
+        };
+
+        const formattedData = formatDataWithRef(testData, testRef, "name", "number");
+
+        test("Returns a nested Array when passed an Object Array", () => {
+            expect(Array.isArray(formattedData)).toBe(true);
+            expect(typeof formattedData[0]).toBe("object");
+        });
+        test("Replaces keyToRemove with keyToAdd for each inner object", () => {
+            formattedData.forEach(obj => {
+                expect(Object.keys(obj).includes("name")).toBe(false);
+                expect(Object.keys(obj).includes("number")).toBe(true);
+            });
+        });
+
+    });
+     describe("formatPropertyTypesData() Testing", () => {
         test("Returns an array when passed an Array of Object(s)", () => {
             const arrOfObj = [{}]
             expect(Array.isArray(formatPropertyTypesData(arrOfObj))).toBe(true)
@@ -42,7 +117,7 @@ describe("Utility Functions Testing", () => {
             expect(formatPropertyTypesData(propertyTypesTestData)).toEqual(expectedOutput)
         });
     });
-    describe("formatUsersData() testing", () => {
+    describe("formatUsersData() Testing", () => {
         test("Returns an array when passed an Array of Object(s)", () => {
             const arrOfObj = [{}]
             expect(Array.isArray(formatUsersData(arrOfObj))).toBe(true)
@@ -113,221 +188,41 @@ describe("Utility Functions Testing", () => {
             expect(formatUsersData(usersTestData)).toEqual(expectedOutput)
         });
     });
-    describe("formatPropertiesData() testing", () => {
+    describe("formatPropertiesData() Testing", () => {
 
-        test("Returns an array when passed arguements", () => {
-            const arrOfObj = [{}]
-            expect(Array.isArray(formatPropertiesData(arrOfObj, arrOfObj))).toBe(true)
-        });
-        test("Returns a nested array when passed arguements", () => {
-            const arrOfObj = [{}]
-            expect(Array.isArray(formatPropertiesData(arrOfObj, arrOfObj)[0])).toBe(true)
-        });
-
-        const testPropertyData = [{"name": "Modern Apartment in City Center",
-            "property_type": "Apartment",
-            "location": "London, UK",
-            "price_per_night": 120.0,
-            "description": "Description of Modern Apartment in City Center.",
-            "host_name": "Alice Johnson",
-            "amenities": ["WiFi", "TV", "Kitchen"]}]
+    });
+    describe("formatReviewsData() Testing", () => {
         
-        const testUsersData = [{
-            "first_name": "Bob",
-            "surname": "Smith",
-            "email": "bob@example.com",
-            "phone_number": "+44 7000 222222",
-            "role": "guest",
-            "avatar": "https://example.com/images/bob.jpg"},
-            {"first_name": "Alice",
-            "surname": "Johnson",
-            "email": "alice@example.com",
-            "phone_number": "+44 7000 111111",
-            "role": "host",
-            "avatar": "https://example.com/images/alice.jpg"}]
+    });
+    describe("formatFavouritesData() Testing", () => {
+        test("Returns a nested Array when passed an Obect Array", () => {
+            expect(Array.isArray(formatFavouritesData([{}]))).toBe(true);
+            expect(typeof formatFavouritesData([{}])[0]).toBe("object");
+        });
 
-        test("Returns the user_id of the host_name as the first value of the inner array", () => {
-            expect(formatPropertiesData(testPropertyData, testUsersData)[0][0]).toBe(2)
-        });
-        test("Returns name as the second value of the inner array", () => {
-            expect(formatPropertiesData(testPropertyData, testUsersData)[0][1]).toBe("Modern Apartment in City Center")
-        });
-        test("Returns location as the third value of the inner array", () => {
-            expect(formatPropertiesData(testPropertyData, testUsersData)[0][2]).toBe("London, UK")
-        });
-        test("Returns property_type as the fourth value of the inner array", () => {
-            expect(formatPropertiesData(testPropertyData, testUsersData)[0][3]).toBe("Apartment")
-        });
-        test("Returns price_per_night as the fifth value of the inner array", () => {
-            expect(formatPropertiesData(testPropertyData, testUsersData)[0][4]).toBe(120.0)
-        });
-        test("Returns description as the sixth value of the inner array", () => {
-            expect(formatPropertiesData(testPropertyData, testUsersData)[0][5]).toBe("Description of Modern Apartment in City Center.")
-        });
-        test("Returns all of the values as the inner array", () => {
-            const expectedOutput = [[
-                2,
-                "Modern Apartment in City Center",
-                "London, UK",
-                "Apartment",
-                120.0,
-                "Description of Modern Apartment in City Center."]]
-            
-                expect(formatPropertiesData(testPropertyData, testUsersData)).toEqual(expectedOutput)
-        });
-        test("Returns multiple arrays when passed multiple objects", () => {
-            const testPropertyData = [{"name": "Modern Apartment in City Center",
-                "property_type": "Apartment",
-                "location": "London, UK",
-                "price_per_night": 120.0,
-                "description": "Description of Modern Apartment in City Center.",
-                "host_name": "Alice Johnson",
-                "amenities": ["WiFi", "TV", "Kitchen"]},
-                {"name": "Cosy Family House",
-                "property_type": "House",
-                "location": "Manchester, UK",
-                "price_per_night": 150.0,
-                "description": "Description of Cosy Family House.",
-                "host_name": "Bob Smith",
-                "amenities": ["WiFi", "Parking", "Kitchen"]}]
+        const testData =[
+            {guest_id: 1, property_id: 10},
+            {guest_id: 2, property_id: 9},
+            {guest_id: 3, property_id: 8}
+        ];
+        
+        const formattedData = formatFavouritesData(testData);
 
-            const expectedOutput = [[
-                1,
-                "Modern Apartment in City Center",
-                "London, UK",
-                "Apartment",
-                120.0,
-                "Description of Modern Apartment in City Center."],
-                [1, 
-                "Cosy Family House",
-                "Manchester, UK",
-                "House",
-                150.0,
-                "Description of Cosy Family House."
-                ]]
+        test("Returns each guest_id as the first element of each inner array", () => {
+            expect(formattedData[0][0]).toBe(1);
+            expect(formattedData[1][0]).toBe(2);
+            expect(formattedData[2][0]).toBe(3);
+        });
+        test("Returns each property_id as the first element of each inner array", () => {
+            expect(formattedData[0][1]).toBe(10);
+            expect(formattedData[1][1]).toBe(9);
+            expect(formattedData[2][1]).toBe(8);
+        });
+        test("Returns each pairs of guest_id and property_id as elements within the same inner array", () => {
+            expect(formattedData[0]).toEqual([1, 10]);
+            expect(formattedData[1]).toEqual([2, 9]);
+            expect(formattedData[2]).toEqual([3, 8]);
         });
     });
-    describe("formatReviewsData() testing", () => {
-        const testReviewsData = [{
-            "guest_name": "Alice Johnson",
-            "property_name": "Chic Studio Near the Beach",
-            "rating": 4,
-            "comment": "Comment about Chic Studio Near the Beach: Great location and cosy space, perfect for a beach getaway."
-          },
-          {
-            "guest_name": "Bob Smith",
-            "property_name": "Modern Apartment in City Center",
-            "rating": 2,
-            "comment": "Comment about Modern Apartment in City Center: Too noisy at night, and the apartment felt cramped. Wouldn’t stay again."
-          },
-          {
-            "guest_name": "Emma Davis",
-            "property_name": "Luxury Penthouse with View",
-            "rating": 5,
-            "comment": "Comment about Luxury Penthouse with View: Incredible property! The view from the penthouse is stunning."
-          }]
 
-        const testUsersData = [{
-        "first_name": "Alice",
-        "surname": "Johnson",
-        "email": "alice@example.com",
-        "phone_number": "+44 7000 111111",
-        "role": "host",
-        "avatar": "https://example.com/images/alice.jpg"
-        },
-        {
-        "first_name": "Bob",
-        "surname": "Smith",
-        "email": "bob@example.com",
-        "phone_number": "+44 7000 222222",
-        "role": "guest",
-        "avatar": "https://example.com/images/bob.jpg"
-        },
-        {
-        "first_name": "Emma",
-        "surname": "Davis",
-        "email": "emma@example.com",
-        "phone_number": "+44 7000 333333",
-        "role": "host",
-        "avatar": "https://example.com/images/emma.jpg"
-        }]
-
-        const testPropertiesData = [{
-        "name": "Modern Apartment in City Center",
-        "property_type": "Apartment",
-        "location": "London, UK",
-        "price_per_night": 120.0,
-        "description": "Description of Modern Apartment in City Center.",
-        "host_name": "Emma Davis",
-        "amenities": ["WiFi", "TV", "Kitchen"]
-        },
-        {
-        "name": "Luxury Penthouse with View",
-        "property_type": "Apartment",
-        "location": "London, UK",
-        "price_per_night": 250.0,
-        "description": "Description of Luxury Penthouse with View.",
-        "host_name": "Alice Johnson",
-        "amenities": ["WiFi", "Parking", "TV"]
-        },
-        {
-        "name": "Chic Studio Near the Beach",
-        "property_type": "Studio",
-        "location": "Brighton, UK",
-        "price_per_night": 90.0,
-        "description": "Description of Chic Studio Near the Beach.",
-        "host_name": "Bob Smith",
-        "amenities": ["WiFi"]
-        }]
-
-        test("Returns an array when passed arguements", () => {
-            const arrOfObj = [{}]
-            expect(Array.isArray(formatReviewsData(arrOfObj, arrOfObj, arrOfObj))).toBe(true)
-        });
-        test("Returns a nested array when passed arguements", () => {
-            const arrOfObj = [{}]
-            expect(Array.isArray(formatReviewsData(arrOfObj, arrOfObj, arrOfObj)[0])).toBe(true)
-        });
-        test("Returns the property_id as the first value of the inner array", () => {
-            expect(formatReviewsData(testReviewsData, testPropertiesData, testUsersData)[0][0]).toBe(3)
-        });
-        test("Returns the guest_id as the second value of the inner array", () => {
-            expect(formatReviewsData(testReviewsData, testPropertiesData, testUsersData)[0][1]).toBe(1)
-        });
-        test("Returns the rating as the third value of the inner array", () => {
-            expect(formatReviewsData(testReviewsData, testPropertiesData, testUsersData)[0][2]).toBe(4)
-        });
-        test("Returns the comment as the fourth value of the inner array", () => {
-            expect(formatReviewsData(testReviewsData, testPropertiesData, testUsersData)[0][3]).toBe("Comment about Chic Studio Near the Beach: Great location and cosy space, perfect for a beach getaway.")
-        });
-        test("Returns all of the values as one inner array", () => {
-            const expectedOutput = [3,
-                1,
-                4,
-                "Comment about Chic Studio Near the Beach: Great location and cosy space, perfect for a beach getaway."
-            ]
-            expect(formatReviewsData(testReviewsData, testPropertiesData, testUsersData)[0]).toEqual(expectedOutput)
-        });
-        test("Returns multiple arrays", () => {
-            const expectedOutput = [[
-                3,
-                1,
-                4,
-                "Comment about Chic Studio Near the Beach: Great location and cosy space, perfect for a beach getaway."
-            ],
-            [
-                1,
-                2,
-                2,   
-                "Comment about Modern Apartment in City Center: Too noisy at night, and the apartment felt cramped. Wouldn’t stay again."
-            ],
-            [
-                2,
-                3,
-                5,
-                "Comment about Luxury Penthouse with View: Incredible property! The view from the penthouse is stunning."
-            ]]
-            expect(formatReviewsData(testReviewsData, testPropertiesData, testUsersData)).toEqual(expectedOutput)
-        });
-    });
 });
