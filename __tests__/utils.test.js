@@ -189,7 +189,7 @@ describe("Utility Function Testing", () => {
         });
     });
     describe("formatPropertiesData() Testing", () => {
-
+        
     });
     describe("formatReviewsData() Testing", () => {
         

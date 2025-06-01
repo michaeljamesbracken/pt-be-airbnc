@@ -22,19 +22,20 @@ exports.formatDataWithRef = (data, refObj, keyToRemove, keyToAdd) => {
 };
 
 exports.formatPropertyTypesData = (propertyTypes) => {
-    return propertyTypes.map(({property_type, description}) => [property_type, description])
+    return propertyTypes.map(({property_type, description}) => 
+        [property_type, description]);
 };
 
 exports.formatUsersData = (users) => {
     return users.map(({first_name, surname, email, phone_number, role, avatar}) => {
         role === "host" ? role = "true" :role = "false"
-        return [first_name, surname, email, phone_number, role, avatar]
+        return [first_name, surname, email, phone_number, role, avatar];
     })
 };
 
 exports.formatPropertiesData = (properties) => {
     return properties.map(({host_id, name, location, property_type, price_per_night, description}) => 
-        [host_id, name, location, property_type, price_per_night, description])
+        [host_id, name, location, property_type, price_per_night, description]);
 };
 
 exports.formatReviewsData = (reviews) => {

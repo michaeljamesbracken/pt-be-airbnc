@@ -27,18 +27,23 @@ describe("app.js Testing", () => {
                 expect(property.hasOwnProperty("host")).toBe(true);
             });
         });
+        test("responds with an array that is sorted from most favourites to least by default", async () => {
+            const {body} = await request(app).get("/api/properties");
+
+            expect(body.properties[0].property_name).toBe("Charming Studio Retreat");
+            expect(body.properties[5].property_name).toBe("Modern Apartment in City Center");
+            expect(body.properties[10].property_name).toBe("Luxury Penthouse with View");
+        });
         describe("Queries Testing", () => {
             describe("Filter Testing", () => {
                 describe("?maxprice= Testing", () => {
                     test("responds with an array of properties with price_per_night <= the passed value", async () => {
                         
-                        // Minimum price_per_night from the test data is 85.0
-
-                        const maxPrice = 90;
+                        const maxPrice = 100;
 
                         const {body} = await request(app).get(`/api/properties?maxprice=${maxPrice}`);
                         
-                        expect(body.properties.length > 0).toBe(true);
+                        expect(body.properties.length).toBe(4);
 
                         body.properties.forEach(property => {
                         expect(property.price_per_night <= maxPrice).toBe(true);
@@ -48,14 +53,12 @@ describe("app.js Testing", () => {
                 });
                 describe("?minprice= Testing", () => {
                     test("responds with an array of properties with price_per_night >= the passed value", async () => {
-                        
-                        // Maximum price_per_night from the test data is 250.0
-                        
+                                                
                         const minPrice = 120;
 
                         const {body} = await request(app).get(`/api/properties?minprice=${minPrice}`);
                         
-                        expect(body.properties.length > 0).toBe(true);
+                        expect(body.properties.length).toBe(6);
                         
                         body.properties.forEach(property => {
                         expect(property.price_per_night >= minPrice).toBe(true);
@@ -65,25 +68,14 @@ describe("app.js Testing", () => {
                 });
                 describe("?host= Testing", () => {
                     test("responds with an array of properties with host_id = the passed value", async () => {
-                        
-                        // Host_ids from the test data are: 1 (Alice Johnson), 3 (Emma Davis), 5 (Isabella Martinez)
-                        
-                        const hosts = {
-                            1: "Alice Johnson",
-                            3: "Emma Davis",
-                            5: "Isabella Martinez"
-                        };
-
                         const testHost = 1;
-
+                        
                         const {body} = await request(app).get(`/api/properties?host=${testHost}`);
                         
-                        console.log(body);
-
-                        expect(body.properties.length > 0).toBe(true);
+                        expect(body.properties.length).toBe(5);
                         
                         body.properties.forEach(property => {
-                        expect(property.host).toBe(hosts[testHost]);
+                        expect(property.host).toBe("Alice Johnson");
                         });
 
                     });

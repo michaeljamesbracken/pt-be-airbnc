@@ -44,10 +44,11 @@ AirBNC is a ...
         npm run seed
 
     Tables seeded:
-    - Table 1
-    - Table 2
-    - Table 3
-    - Table 4
+    - Property Type
+    - Users
+    - Properties
+    - Reviews
+    - Favourites
 
 
 ## USAGE
