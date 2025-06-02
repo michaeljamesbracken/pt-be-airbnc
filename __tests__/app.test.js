@@ -92,4 +92,30 @@ describe("app.js Testing", () => {
             
         });
     });
+    describe("GET /api/properties/:id testing", () => {
+        test("responds with status code: 200", async () => {
+            await request(app).get("/api/properties/1").expect(200);
+        });
+        test("responds with an array of a single property that contains {property_id, property_name, location, price_per_night, description, host, host_avatar, favourite_count}", async () => {
+            const {body} = await request(app).get("/api/properties/1");
+
+            expect(Array.isArray(body.property)).toBe(true);
+
+            expect(body.property.length).toBe(1);
+
+            expect(body.property[0].hasOwnProperty("property_id")).toBe(true);
+            expect(body.property[0].hasOwnProperty("property_name")).toBe(true);
+            expect(body.property[0].hasOwnProperty("location")).toBe(true);
+            expect(body.property[0].hasOwnProperty("price_per_night")).toBe(true);
+            expect(body.property[0].hasOwnProperty("description")).toBe(true);
+            expect(body.property[0].hasOwnProperty("host")).toBe(true);
+            expect(body.property[0].hasOwnProperty("host_avatar")).toBe(true);
+            expect(body.property[0].hasOwnProperty("favourite_count")).toBe(true);
+        });
+        describe ("Queries Testing", () => {
+            describe("?user_id= Testing", () => {
+
+            });
+        })
+    })
 });
