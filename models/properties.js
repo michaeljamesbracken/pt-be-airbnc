@@ -61,9 +61,9 @@ exports.selectProperties = async ({maxprice: maxPrice, minprice: minPrice, sort 
 
 };
 
-exports.selectProperty = async (id) => {
+exports.selectProperty = async (propertyID, userID) => {
 
-    if(isNaN(id)){
+    if(isNaN(propertyID)){
         return Promise.reject();
     };
 
@@ -80,10 +80,32 @@ exports.selectProperty = async (id) => {
         ON
         properties.property_id = favourites.property_id
         WHERE
-        properties.property_id = ${id}
+        properties.property_id = ${propertyID}
         GROUP BY
         properties.property_id, property_name, location, price_per_night, description, host, host_avatar `;
 
     const {rows} = await db.query(standardQuery);
     return rows;
+};
+
+exports.selectReviews = async (propertyID) => {
+
+    if(isNaN(propertyID)){
+        return Promise.reject();
+    };
+
+    const standardQuery = `SELECT
+    property_id, comment, rating, CONCAT(users.first_name, ' ', users.surname) AS guest, users.avatar AS guest_avatar
+    FROM
+    reviews
+    JOIN
+    users
+    ON
+    reviews.guest_id = users.user_id
+    WHERE
+    property_id = ${propertyID} `;
+
+    const {rows} = await db.query(standardQuery);
+    return rows;
+
 };

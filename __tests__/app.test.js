@@ -2,12 +2,25 @@ const request = require("supertest");
 const app = require("../app.js");
 const seed = require("../db/seed.js");
 const data = require("../db/data/test");
+const db = require("../db/connection.js");
 
 beforeEach(async() => {
     await seed(data);
 });
 
+afterAll(() => {
+    db.end();
+});
+
 describe("app.js Testing", () => {
+    describe("Default Error Handling", () => {
+        describe("Invalid Path", () => {
+            test("Responds with status code: 404, and msg: Path not found", async () => {
+                const {body} = await request(app).get("/non-existant-path").expect(404);
+                expect(body.msg).toBe("Path not found.");
+            });
+        });
+    });
     describe("GET /api/properties Testing", () => {
         test("responds with status code: 200", async () => {
             await request(app).get("/api/properties").expect(200);
@@ -92,7 +105,7 @@ describe("app.js Testing", () => {
             
         });
     });
-    describe("GET /api/properties/:id testing", () => {
+    describe("GET /api/properties/:id Testing", () => {
         test("responds with status code: 200", async () => {
             await request(app).get("/api/properties/1").expect(200);
         });
@@ -116,6 +129,48 @@ describe("app.js Testing", () => {
             describe("?user_id= Testing", () => {
 
             });
-        })
-    })
+        });
+    });
+    describe("GET /api/properties/:id/reviews Testing", () => {
+        test("responds with status code: 200", async () => {
+            await request(app).get("/api/properties/1/reviews").expect(200);
+        });
+        test("responds with an array of reviews for a single property that contains {review_id, comment, rating, created_at, guest, guest_avatar}", async () => {
+            const {body} = await request(app).get("/api/properties/1/reviews");
+
+            expect(Array.isArray(body.reviews)).toBe(true);
+
+            expect(body.reviews.length > 0).toBe(true);
+
+            body.reviews.forEach(review => {
+                expect(review.hasOwnProperty("property_id")).toBe(true);
+                expect(review.hasOwnProperty("comment")).toBe(true);
+                expect(review.hasOwnProperty("rating")).toBe(true);
+                // expect(review.hasOwnProperty("created_at")).toBe(true);
+                expect(review.hasOwnProperty("guest")).toBe(true);
+                expect(review.hasOwnProperty("guest_avatar")).toBe(true);
+            });
+
+        });
+    });
+    describe("GET api/users/:id Testing", () => {
+        test("responds with status code: 200", async () => {
+            await request(app).get("/api/users/1").expect(200);
+        });
+        test("responds with an array of a single user that contains {user_id, first_name, surname, email, phone_number, avatar, created_at}", async () => {
+            const {body} = await request(app).get("/api/users/1");
+
+            expect(Array.isArray(body.user)).toBe(true);
+
+            expect(body.user.length).toBe(1);
+
+            expect(body.user[0].hasOwnProperty("user_id")).toBe(true);
+            expect(body.user[0].hasOwnProperty("first_name")).toBe(true);
+            expect(body.user[0].hasOwnProperty("surname")).toBe(true);
+            expect(body.user[0].hasOwnProperty("email")).toBe(true);
+            expect(body.user[0].hasOwnProperty("phone_number")).toBe(true);
+            expect(body.user[0].hasOwnProperty("avatar")).toBe(true);
+            expect(body.user[0].hasOwnProperty("created_at")).toBe(true);
+        });
+    });
 });
