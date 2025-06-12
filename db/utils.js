@@ -39,8 +39,8 @@ exports.formatPropertiesData = (properties) => {
 };
 
 exports.formatReviewsData = (reviews) => {
-    return reviews.map(({property_id, guest_id, rating, comment}) => 
-    [property_id, guest_id, rating, comment]);
+    return reviews.map(({property_id, guest_id, rating, comment, created_at}) => 
+    [property_id, guest_id, rating, comment, created_at]);
 };
 
 exports.formatFavouritesData = (favourites) => {

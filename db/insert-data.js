@@ -14,7 +14,7 @@ exports.insertProperties = (properties) => {
 };
 
 exports.insertReviews = (reviews) => {
-    return db.query(format(`INSERT INTO reviews(property_id, guest_id, rating, comment) VALUES %L`, reviews));
+    return db.query(format(`INSERT INTO reviews(property_id, guest_id, rating, comment, created_at) VALUES %L`, reviews));
 };
 
 exports.insertFavourites = (favourites) => {

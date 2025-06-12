@@ -1,4 +1,4 @@
-Last Update: 26 May 2025
+Last Update: 12 June 2025
 
 
 # AirBNC
@@ -16,6 +16,7 @@ AirBNC is a ...
 
     Dependencies used:
 
+    - **body-parser** - 
     - **dotenv** - 
     - **express** - 
     - **pg** - 

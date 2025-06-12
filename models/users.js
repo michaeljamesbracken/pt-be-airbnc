@@ -2,8 +2,6 @@ const db = require("../db/connection");
 
 exports.selectUser = async (userID) => {
 
-    console.log(userID);
-
     if(isNaN(userID)){
         return Promise.reject();
     };

@@ -21,4 +21,4 @@ exports.manageTables = async () => {
 
     await db.query(createFavourites);
 
-}
+};
