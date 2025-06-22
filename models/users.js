@@ -18,3 +18,22 @@ exports.selectUser = async (userID) => {
     return rows;
 
 };
+
+exports.updateUser = async (userID, updates) => {
+    
+    let standardQuery = `UPDATE 
+    users 
+    SET 
+    `;
+
+    standardQuery += Object.keys(updates).map((property) => {
+       return `${property} = '${updates[property]}' `
+    }).join(", ");
+
+    standardQuery += `WHERE 
+    user_id = ${userID}
+    RETURNING *;`;
+
+    const {rows} = await db.query(standardQuery);
+    return rows;
+};

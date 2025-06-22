@@ -3,12 +3,15 @@ const bodyParser = require("body-parser");
 
 const {getProperties,
     getPropertyById,
-    getReviews
+    getReviews,
+    postReview
 } = require("./controllers/properties");
 
-const {getUserById} = require("./controllers/users");
+const {getUserById,
+    patchUser
+} = require("./controllers/users");
 
-const {postReview} = require("./controllers/reviews");
+const {deleteReview} = require("./controllers/reviews");
 
 const {handlePathNotFound,
     handleCustomErrors,
@@ -23,10 +26,12 @@ app.get("/api/properties", getProperties);
 app.get("/api/properties/:id", getPropertyById);
 
 app.get("/api/properties/:id/reviews", getReviews);
-
 app.post("/api/properties/:id/reviews", postReview);
 
 app.get("/api/users/:id", getUserById);
+app.patch("/api/users/:id", patchUser);
+
+app.delete("/api/reviews/:id", deleteReview);
 
 app.all("*invalid-path", handlePathNotFound);
 

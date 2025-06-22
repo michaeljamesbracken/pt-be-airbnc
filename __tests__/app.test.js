@@ -225,4 +225,86 @@ describe("app.js Testing", () => {
             expect(body.hasOwnProperty("created_at")).toBe(true);
         });
     });
+    describe("DELETE /api/reviews/:id Testing", () => {
+        test("responds with status code: 204", async () => {
+            await request(app).delete("/api/reviews/1").expect(204);
+        });
+        test("responds with an no/empty body", async () => {
+            const {body} = await request(app).delete("/api/reviews/1");
+            
+            expect(typeof body).toBe("object");
+            expect(Object.keys(body).length).toBe(0);
+        });
+    });
+    describe("PATCH /api/users/:id Testing", () => {
+        test("responds with status code: 200", async () => {
+            const testUpdate = {first_name: "Abigail"};
+            await request(app).patch("/api/users/1").send(testUpdate).expect(200);        
+        });
+        test("responds with an object that contains all of the properties from the updated row {user_id, first_name, surname, email, phone_number, is_host, avatar, created_at}", async () => {
+            const testUpdate = {first_name: "Abigail"};
+
+            const {body:user} = await request(app).patch("/api/users/1").send(testUpdate);
+
+            expect(typeof user === "object").toBe(true);
+
+            expect(Object.keys(user).length).toBe(8);
+
+            expect(user.hasOwnProperty("user_id")).toBe(true);
+            expect(user.hasOwnProperty("first_name")).toBe(true);
+            expect(user.hasOwnProperty("surname")).toBe(true);
+            expect(user.hasOwnProperty("email")).toBe(true);
+            expect(user.hasOwnProperty("phone_number")).toBe(true);
+            expect(user.hasOwnProperty("is_host")).toBe(true);
+            expect(user.hasOwnProperty("avatar")).toBe(true);
+            expect(user.hasOwnProperty("created_at")).toBe(true);
+        });
+        test("updates first_name", async () => {
+            const updatedFirstName = {first_name: "Abigail"};
+            const {body:user} = await request(app).patch("/api/users/1").send(updatedFirstName);
+
+            expect(user.first_name).toBe("Abigail");
+        });
+        test("updates surname", async () => {
+            const updatedSurname = {surname: "Jameson"};
+            const {body:user} = await request(app).patch("/api/users/1").send(updatedSurname);
+
+            expect(user.surname).toBe("Jameson");
+        });
+        test("updates email", async () => {
+            const updatedEmail = {email: "alice01@example.com"};
+            const {body:user} = await request(app).patch("/api/users/1").send(updatedEmail);
+
+            expect(user.email).toBe("alice01@example.com");
+        });
+        test("updates phone_number", async () => {
+            const updatedPhone = {phone_number: "+44 7000 123456"};
+            const {body:user} = await request(app).patch("/api/users/1").send(updatedPhone);
+
+            expect(user.phone_number).toBe("+44 7000 123456");
+        });
+        test("updates avatar", async () => {
+            const updatedAvatar = {avatar: "www.avatar.com/newAvatar"};
+            const {body:user} = await request(app).patch("/api/users/1").send(updatedAvatar);
+
+            expect(user.avatar).toBe("www.avatar.com/newAvatar");
+        });
+        test("updates multiple properties at once", async () => {
+            const updatedUser = {
+                first_name: "Anna",
+                surname: "Jackson",
+                email: "anna@example.com",
+                phone_number: "+44 7000 112233",
+                avatar: "www.example.com/anna"
+            };
+
+            const {body:user} = await request(app).patch("/api/users/1").send(updatedUser);
+
+            expect(user.first_name).toBe("Anna");
+            expect(user.surname).toBe("Jackson");
+            expect(user.email).toBe("anna@example.com");
+            expect(user.phone_number).toBe("+44 7000 112233");
+            expect(user.avatar).toBe("www.example.com/anna");
+        });
+    });
 });
