@@ -8,9 +8,9 @@
     "test": "jest",
     "test-app": "jest app",
     "test-utils": "jest utils",
-    "seed": "node ./db/seed-run.js",
-    "seed-prod": "NODE_ENV=production npm run seed",
     "start": "node listen.js",
+    "seed-dev": "node ./db/seed-run.js",
+    "seed-prod": "NODE_ENV=production npm run seed-dev",
     "setup-db": "psql -f ./db/setup-db.sql"
   },
   "repository": {
