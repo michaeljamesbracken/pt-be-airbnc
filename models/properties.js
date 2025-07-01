@@ -32,7 +32,7 @@ exports.selectProperties = async ({maxprice: maxPrice, minprice: minPrice, sort 
         users 
         ON 
         properties.host_id = users.user_id
-        JOIN
+        LEFT JOIN
         favourites
         ON
         properties.property_id = favourites.property_id `;
