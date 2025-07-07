@@ -72,7 +72,7 @@ exports.selectProperty = async (propertyID, userID) => {
         users 
         ON 
         properties.host_id = users.user_id
-        JOIN
+        LEFT JOIN
         favourites
         ON
         properties.property_id = favourites.property_id
