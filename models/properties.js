@@ -93,7 +93,7 @@ exports.selectProperty = async (propertyID, userID) => {
 exports.selectReviews = async (propertyID) => {
 
     const standardQuery = `SELECT
-    property_id, comment, rating, reviews.created_at, CONCAT(users.first_name, ' ', users.surname) AS guest, users.avatar AS guest_avatar
+    review_id, comment, rating, reviews.created_at, CONCAT(users.first_name, ' ', users.surname) AS guest, users.avatar AS guest_avatar
     FROM
     reviews
     JOIN
